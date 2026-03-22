@@ -4,126 +4,149 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AlgoMetric Pro | Raman Kumar</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
-        :root { --primary: #2563eb; --dark: #0f172a; --gold: #f59e0b; --success: #25d366; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f1f5f9; margin: 0; text-align: center; }
-        
-        .main-container { max-width: 900px; margin: 20px auto; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
-        header { background: var(--dark); color: white; padding: 40px; }
-        .stats-bar { display: flex; justify-content: center; gap: 30px; padding: 15px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; font-weight: bold; }
-        
-        .dashboard { padding: 40px; }
-        .btn { padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; margin: 5px; }
-        .btn-blue { background: var(--primary); color: white; }
-        .btn-premium { background: var(--gold); color: white; font-size: 1.1em; margin-top: 20px; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); }
-        .btn-premium:hover { transform: scale(1.05); }
-
-        /* Payment Modal */
-        #payment-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); justify-content: center; align-items: center; z-index: 10000; }
-        .pay-card { background: white; padding: 30px; border-radius: 20px; width: 340px; text-align: center; position: relative; }
-        .qr-img { width: 220px; height: 220px; margin: 15px auto; border: 4px solid #f1f5f9; border-radius: 12px; object-fit: contain; }
-        .pay-card input { width: 90%; padding: 12px; margin: 15px 0; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 16px; text-align: center; }
-        
-        .wa-link { color: var(--success); text-decoration: none; font-weight: bold; font-size: 0.9em; display: block; margin-top: 10px; }
-
+        :root { --primary: #2563eb; --dark: #0f172a; --gold: #f59e0b; --success: #22c55e; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f1f5f9; margin: 0; padding-bottom: 50px; }
+        .container { max-width: 950px; margin: 20px auto; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
+        header { background: var(--dark); color: white; padding: 40px; text-align: center; }
+        .stats { display: flex; justify-content: center; gap: 40px; padding: 15px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; font-weight: bold; }
+        .content-area { padding: 40px; text-align: center; }
+        .btn { padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; color: white; }
+        .btn-blue { background: var(--primary); margin: 5px; }
+        .btn-download { background: var(--gold); font-size: 1.2em; margin-top: 30px; box-shadow: 0 4px 15px rgba(245,158,11,0.3); }
+        #secure-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; z-index: 9999; }
+        .card { background: white; padding: 30px; border-radius: 20px; width: 350px; text-align: center; }
+        .qr-img { width: 200px; height: 200px; margin: 15px auto; border: 3px solid #f1f5f9; border-radius: 12px; }
+        input { width: 90%; padding: 12px; margin: 12px 0; border: 2px solid #e2e8f0; border-radius: 8px; text-align: center; font-size: 16px; }
+        .step { display: none; }
+        .step.active { display: block; }
         table { width: 100%; border-collapse: collapse; margin-top: 25px; }
-        th, td { padding: 12px; border: 1px solid #e2e8f0; }
+        th, td { padding: 12px; border: 1px solid #e2e8f0; text-align: center; }
         th { background: #f8fafc; }
     </style>
 </head>
 <body>
 
-<div class="main-container">
+<div class="container">
     <header>
         <h1>AlgoMetric Pro 🚀</h1>
-        <p>Advanced Algorithm Benchmarking | Raman Kumar (24IT40)</p>
+        <p>Benchmark Analysis by Raman Kumar | Roll No: 40 | GEC Ajmer</p>
     </header>
 
-    <div class="stats-bar">
+    <div class="stats">
         <span>👁️ Views: <span id="v-count">0</span></span>
-        <span style="cursor:pointer" onclick="updateHit('likes')">👍 Likes: <span id="l-count">0</span></span>
+        <span style="cursor:pointer" onclick="addLike()">👍 Likes: <span id="l-count">0</span></span>
     </div>
 
-    <div class="dashboard">
+    <div class="content-area">
         <div class="controls">
-            <button class="btn btn-blue" onclick="loadTable('windows_11')">Windows 11 Data</button>
-            <button class="btn btn-blue" style="background:#d97706" onclick="loadTable('kali_linux')">Kali Linux Data</button>
+            <button class="btn btn-blue" onclick="showTable('windows_11')">Windows 11 Results</button>
+            <button class="btn btn-blue" style="background:#d97706" onclick="showTable('kali_linux')">Kali Linux Results</button>
         </div>
-        <div id="table-area">
-            <p style="color:#94a3b8; margin-top:50px;">Analysis data is free to read. PDF requires Premium Access.</p>
-        </div>
-        <br>
-        <button class="btn btn-premium" onclick="openPayment()">⭐ Unlock Full Report (₹10)</button>
+        <div id="display-table"><p style="color:#94a3b8; margin-top:60px;">Analysis tables are open. Download requires OTP & Payment.</p></div>
+        <button class="btn btn-download" onclick="startSecureDownload()">⭐ Get Full Report PDF</button>
     </div>
 </div>
 
-<div id="payment-modal">
-    <div class="pay-card">
-        <h2 style="margin-top:0;">Premium Access</h2>
-        <p style="font-size: 0.9em; color: #64748b;">Pay <b>₹10</b> to get the Secret Key for download.</p>
-        
-        <img src="GooglePay_QR .png" alt="Scan QR" class="qr-img">
+<div id="secure-modal">
+    <div class="card">
+        <div id="step-1" class="step active">
+            <h3>📧 Email Verification</h3>
+            <p style="font-size: 0.8em; color: #64748b;">Enter email to receive OTP</p>
+            <input type="email" id="email-in" placeholder="Enter your Email">
+            <button class="btn btn-blue" style="width:100%" onclick="sendEmailOTP()">Send OTP</button>
+        </div>
 
-        <p style="font-size: 0.8em; color: #ef4444; font-weight: bold;">Enter Secret Key after payment:</p>
-        <input type="text" id="txn-key" placeholder="Enter RAMANXX Code">
-        
-        <button class="btn btn-blue" style="width:100%; margin:0;" onclick="verifyPayment()">Verify & Download</button>
-        
-        <a href="https://wa.me/917742987003?text=Hi%20Raman,%20I%20have%20paid%2010%20INR.%20Please%20send%20the%20Secret%20Key." 
-           target="_blank" class="wa-link">✅ Paid? Send Screenshot on WhatsApp</a>
+        <div id="step-2" class="step">
+            <h3>Verify Code</h3>
+            <p style="font-size: 0.8em; color: #64748b;">Enter 4-digit code sent to your mail</p>
+            <input type="text" id="otp-in" placeholder="0000">
+            <button class="btn btn-blue" style="width:100%" onclick="verifyEmailOTP()">Verify OTP</button>
+        </div>
 
-        <button style="background:none; border:none; color:#94a3b8; margin-top:15px; cursor:pointer;" onclick="closePayment()">Cancel</button>
+        <div id="step-3" class="step">
+            <h3>💰 Step 3: Payment</h3>
+            <p style="font-size: 0.8em; color: #64748b;">Pay ₹10 and enter Secret Key</p>
+            <img src="GooglePay_QR .png" alt="QR" class="qr-img">
+            <input type="text" id="key-in" placeholder="Enter 885522 Key">
+            <button class="btn btn-blue" style="width:100%; background:var(--success);" onclick="unlockFinal()">Unlock PDF</button>
+            <a href="https://wa.me/917742987003?text=I%20have%20paid%2010%20INR.%20Please%20verify%20my%20payment%20and%20give%20me%20the%20key." 
+               target="_blank" style="display:block; margin-top:10px; color:var(--success); text-decoration:none; font-weight:bold; font-size:0.8em;">
+               ✅ Paid? Send Screenshot on WhatsApp
+            </a>
+        </div>
+        <button style="background:none; border:none; color:#94a3b8; margin-top:20px; cursor:pointer;" onclick="closeModal()">Cancel</button>
     </div>
 </div>
 
 <script>
-    const sid = "raman-premium-final-v1";
-    const SECRET_KEY = "RAMAN10"; // पेमेंट के बाद आप यूजर को यही कोड देंगे
+    // --- आपकी कॉन्फ़िगरेशन ---
+    const SERVICE_ID = "service_raman_it"; 
+    const TEMPLATE_ID = "template_otp_40";
+    const PUBLIC_KEY = "YOUR_PUBLIC_KEY"; // 👈 यहाँ EmailJS की Public Key डालें
+    const FINAL_SECRET = "885522"; // आपकी सीक्रेट की
+    const site_id = "raman-it-40-otp-v6";
 
-    // Stats Logic
+    emailjs.init(PUBLIC_KEY);
+    let generatedOTP;
+
     async function loadStats() {
         try {
-            const vData = await (await fetch(`https://api.countapi.xyz/hit/${sid}/visits`)).json();
-            document.getElementById('v-count').innerText = vData.value;
-            const lData = await (await fetch(`https://api.countapi.xyz/get/${sid}/likes`)).json();
-            document.getElementById('l-count').innerText = lData.value || 0;
-        } catch(e) { console.log("Stats API Delay"); }
+            const v = await (await fetch(`https://api.countapi.xyz/hit/${site_id}/visits`)).json();
+            document.getElementById('v-count').innerText = v.value;
+            const l = await (await fetch(`https://api.countapi.xyz/get/${site_id}/likes`)).json();
+            document.getElementById('l-count').innerText = l.value || 0;
+        } catch(e) {}
     }
 
-    async function updateHit(type) {
-        const res = await fetch(`https://api.countapi.xyz/hit/${sid}/${type}`);
-        const data = await res.json();
-        document.getElementById('l-count').innerText = data.value;
+    async function addLike() {
+        const r = await (await fetch(`https://api.countapi.xyz/hit/${site_id}/likes`)).json();
+        document.getElementById('l-count').innerText = r.value;
     }
 
-    // Table Logic
-    async function loadTable(os) {
+    async function showTable(os) {
         const resp = await fetch('data.json');
         const data = await resp.json();
         const rows = data.benchmarks[os];
-        let h = `<h3>${os.toUpperCase()} Results</h3><table><tr><th>Logic</th><th>Py</th><th>C++</th><th>Java</th><th>C</th></tr>`;
+        let h = `<h3>${os.toUpperCase()} Analysis</h3><table><tr><th>Logic</th><th>Py</th><th>C++</th><th>Java</th><th>C</th></tr>`;
         rows.forEach(r => { h += `<tr><td>${r.logic}</td><td>${r.py}</td><td>${r.cpp}</td><td>${r.java}</td><td>${r.c}</td></tr>`; });
         h += `</table>`;
-        document.getElementById('table-area').innerHTML = h;
+        document.getElementById('display-table').innerHTML = h;
     }
 
-    // Payment Logic
-    function openPayment() { document.getElementById('payment-modal').style.display = 'flex'; }
-    function closePayment() { document.getElementById('payment-modal').style.display = 'none'; }
+    function startSecureDownload() { document.getElementById('secure-modal').style.display = 'flex'; }
+    function closeModal() { document.getElementById('secure-modal').style.display = 'none'; }
 
-    function verifyPayment() {
-        const inputKey = document.getElementById('txn-key').value;
-        if(inputKey === SECRET_KEY) {
-            alert("Success! Your download is starting.");
+    function sendEmailOTP() {
+        const email = document.getElementById('email-in').value;
+        if(!email.includes('@')) return alert("Enter valid email!");
+        generatedOTP = Math.floor(1000 + Math.random() * 9000);
+        
+        emailjs.send(SERVICE_ID, TEMPLATE_ID, { to_email: email, otp_code: generatedOTP })
+            .then(() => {
+                alert("OTP Sent to " + email);
+                document.getElementById('step-1').classList.remove('active');
+                document.getElementById('step-2').classList.add('active');
+            }).catch(err => alert("OTP failed. Check your Public Key/Service ID."));
+    }
+
+    function verifyEmailOTP() {
+        if(document.getElementById('otp-in').value == generatedOTP) {
+            alert("Email Verified! Please Pay ₹10.");
+            document.getElementById('step-2').classList.remove('active');
+            document.getElementById('step-3').classList.add('active');
+        } else { alert("Wrong OTP!"); }
+    }
+
+    function unlockFinal() {
+        if(document.getElementById('key-in').value === FINAL_SECRET) {
             window.open('assignment.pdf', '_blank');
-            closePayment();
-        } else {
-            alert("Incorrect Key! Please pay ₹10 and send screenshot to Raman.");
-        }
+            closeModal();
+        } else { alert("Wrong Secret Key! Pay Raman to get the key."); }
     }
 
     window.onload = loadStats;
 </script>
-
 </body>
 </html>
