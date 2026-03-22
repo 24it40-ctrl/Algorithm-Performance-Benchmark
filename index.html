@@ -78,12 +78,49 @@
 </div>
 
 <script>
-    // --- Logic for Likes, Views, and Auth ---
-    let isLoginMode = true;
+   <script>
+    // आपकी साइट की यूनिक आईडी (इसे मत बदलना)
+    const site_id = "24it40-raman-benchmark"; 
 
-    function toggleAuth() {
-        isLoginMode = !isLoginMode;
-        document.getElementById('auth-title').innerText = isLoginMode ? "Login to Dashboard" : "Create Account";
+    // 1. पेज लोड होते ही चलने वाला फंक्शन
+    window.onload = () => {
+        initApp();   // चेक करेगा कि यूजर लॉगिन है या नहीं
+        initStats(); // लाइव व्यू और लाइक लोड करेगा
+    };
+
+    // 2. लाइव व्यू और लाइक लोड करने का लॉजिक
+    async function initStats() {
+        try {
+            // Views बढ़ाना और दिखाना
+            const viewRes = await fetch(`https://api.countapi.xyz/hit/${site_id}/visits`);
+            const viewData = await viewRes.json();
+            document.getElementById('view-count').innerText = viewData.value;
+
+            // पुराने लाइक्स दिखाना
+            const likeRes = await fetch(`https://api.countapi.xyz/get/${site_id}/likes`);
+            const likeData = await likeRes.json();
+            document.getElementById('like-count').innerText = likeData.value || 0;
+        } catch (err) {
+            console.log("Stats error: API might be slow");
+        }
+    }
+
+    // 3. लाइक बटन दबाने पर क्या होगा
+    async function addLike() {
+        const res = await fetch(`https://api.countapi.xyz/hit/${site_id}/likes`);
+        const data = await res.json();
+        document.getElementById('like-count').innerText = data.value;
+        alert("Thanks for liking, Raman's project!");
+    }
+
+    // 4. लॉगिन और बाकी पुराना लॉजिक (जो पहले दिया था)
+    function initApp() {
+        const user = localStorage.getItem('currentUser');
+        if(user) {
+            document.getElementById('auth-overlay').style.display = 'none';
+            document.getElementById('app-content').style.display = 'block';
+            document.getElementById('user-display').innerText = user;
+        }
     }
 
     function handleAuth() {
@@ -91,52 +128,14 @@
         if(user) {
             localStorage.setItem('currentUser', user);
             initApp();
-        } else { alert("Please enter a username"); }
-    }
-
-    function initApp() {
-        const user = localStorage.getItem('currentUser');
-        if(user) {
-            document.getElementById('auth-overlay').style.display = 'none';
-            document.getElementById('app-content').style.display = 'block';
-            document.getElementById('user-display').innerText = user;
-            
-            // Views Logic
-            let views = parseInt(localStorage.getItem('pageViews') || 0);
-            views++;
-            localStorage.setItem('pageViews', views);
-            document.getElementById('view-count').innerText = views;
-
-            // Load Likes/Dislikes
-            document.getElementById('like-count').innerText = localStorage.getItem('likes') || 0;
-            document.getElementById('dislike-count').innerText = localStorage.getItem('dislikes') || 0;
         }
-    }
-
-    function addLike() {
-        let likes = parseInt(localStorage.getItem('likes') || 0);
-        likes++;
-        localStorage.setItem('likes', likes);
-        document.getElementById('like-count').innerText = likes;
-    }
-
-    function addDislike() {
-        let dislikes = parseInt(localStorage.getItem('dislikes') || 0);
-        dislikes++;
-        localStorage.setItem('dislikes', dislikes);
-        document.getElementById('dislike-count').innerText = dislikes;
-    }
-
-    function logout() {
-        localStorage.removeItem('currentUser');
-        location.reload();
     }
 
     async function loadTable(os) {
         const resp = await fetch('data.json');
         const data = await resp.json();
         const rows = data.benchmarks[os];
-        let html = `<h3>${os.toUpperCase()} Results</h3><table><tr><th>Logic</th><th>Py</th><th>C++</th><th>Java</th><th>C</th></tr>`;
+        let html = `<h3>${os.replace('_', ' ').toUpperCase()} Results</h3><table><tr><th>Logic</th><th>Py</th><th>C++</th><th>Java</th><th>C</th></tr>`;
         rows.forEach(r => {
             html += `<tr><td>${r.logic}</td><td>${r.py}</td><td>${r.cpp}</td><td>${r.java}</td><td>${r.c}</td></tr>`;
         });
@@ -144,8 +143,11 @@
         document.getElementById('table-area').innerHTML = html;
     }
 
-    // Check login on load
-    window.onload = initApp;
+    function logout() {
+        localStorage.removeItem('currentUser');
+        location.reload();
+    }
+
 </script>
 
 </body>
