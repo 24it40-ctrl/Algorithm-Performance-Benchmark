@@ -1,13 +1,14 @@
 {
   "project_info": {
-    "title": "Algorithm Performance Analysis",
+    "title": "Algorithm Performance Benchmark",
     "student": "Raman Kumar Baroliya",
-    "college": "GEC Ajmer"
+    "college": "Government Engineering College, Ajmer",
+    "pdf_file": "com. in system and languages.pdf"
   },
   "results": [
-    { "language": "C++", "execution_time": "0.012 ms", "memory": "2.4 MB", "efficiency": "High" },
-    { "language": "Python", "execution_time": "0.055 ms", "memory": "8.1 MB", "efficiency": "Medium" },
-    { "language": "Java", "execution_time": "0.042 ms", "memory": "15.2 MB", "efficiency": "Medium" },
-    { "language": "C", "execution_time": "0.001 ms", "memory": "1.8 MB", "efficiency": "Ultra High" }
+    { "language": "C++", "runtime": "0.012 ms", "memory": "2.4 MB" },
+    { "language": "Python", "runtime": "0.055 ms", "memory": "8.1 MB" },
+    { "language": "Java", "runtime": "0.042 ms", "memory": "15.2 MB" },
+    { "language": "C", "runtime": "0.001 ms", "memory": "1.8 MB" }
   ]
 }
