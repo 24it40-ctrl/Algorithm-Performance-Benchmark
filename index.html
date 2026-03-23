@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+    <meta name="google-site-verification" content="KoKbpBLPfsCVadgz3lY30ai7__qkl98wI6SqTSCYfpE" />
+
     <title>AlgoMetric Pro | Raman Kumar | GEC Ajmer IT</title>
     <meta name="description" content="Official Research Portal by Raman Kumar, IT Student at GEC Ajmer. Analysis of Recursive vs Non-Recursive Algorithms.">
-    <meta name="keywords" content="Raman Kumar, Raman Kumar Baroliya, GEC Ajmer, AlgoMetric Pro, B.Tech IT Raman, Fibonacci Analysis, Raman Kumar Hatundi">
+    <meta name="keywords" content="Raman Kumar, Raman Kumar Baroliya, GEC Ajmer, AlgoMetric Pro, IT Department GEC Ajmer, Algorithm Project Raman, Fibonacci Analysis, Raman Kumar Hatundi">
+    <meta name="author" content="Raman Kumar">
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
@@ -29,7 +32,8 @@
         .tab-btn.active { background: white; color: var(--primary); border-bottom: 4px solid var(--primary); }
 
         .panel { padding: 40px; display: none; min-height: 550px; }
-        .panel.active { display: block; }
+        .panel.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         /* Original Tables Data */
         .data-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
@@ -58,7 +62,7 @@
 
 <header>
     <h1>AlgoMetric Pro 🚀</h1>
-    <p>Raman Kumar | IT Specialist | GEC Ajmer Portfolio</p>
+    <p>Project Portfolio: Raman Kumar | GEC Ajmer IT Student</p>
 </header>
 
 <div class="container">
@@ -69,7 +73,7 @@
     </div>
 
     <div id="p-table" class="panel active">
-        <h3>Performance Comparison Table</h3>
+        <h3>Performance Analysis: Original Data</h3>
         <table class="data-table">
             <thead>
                 <tr><th>Algorithm Type</th><th>C++ (ms)</th><th>Java (ms)</th><th>Python (ms)</th></tr>
@@ -89,7 +93,7 @@
     </div>
 
     <div id="p-pdf" class="panel">
-        <h3>Research Report Preview (Fixed Mode)</h3>
+        <h3>Full Research PDF (Read-Only Mode)</h3>
         <p style="color:red; font-size:12px; font-weight:bold;">⚠️ Security Note: Reading allowed. Print, Scroll and Download are disabled.</p>
         <div class="pdf-secure-container">
             <div class="glass-shield"></div>
@@ -104,7 +108,7 @@
 public class Main {
     public static void main(String[] args) {
         // [Recursive & Iterative Implementation Locked]
-        System.out.println("Analyzing Performance...");
+        System.out.println("Analyzing Performance Statistics...");
     }
 }
         </div>
@@ -112,7 +116,7 @@ public class Main {
         <div class="code-window" style="border-left-color: #38bdf8;">
 import time
 def recursive_fib(n):
-    # Logic Hidden until payment
+    # Case-sensitive logic encrypted for security
     pass
         </div>
     </div>
@@ -136,17 +140,17 @@ def recursive_fib(n):
             <button class="btn-unlock" style="width:100%; font-size:1rem; padding:15px;" onclick="verify()">Confirm</button>
         </div>
         <div id="step3" style="display:none">
-            <h3>Final Step</h3>
+            <h3>Final Unlock</h3>
             <p>Pay ₹10 to Raman Kumar</p>
             <a href="upi://pay?pa=lalr13031-2@okaxis&pn=Raman%20Kumar&am=10&cu=INR" class="btn-unlock" style="display:block; text-decoration:none; background:var(--primary); font-size:1rem; padding:15px;">Pay via UPI</a>
             <button class="btn-unlock" style="width:100%; background:#10b981; font-size:1rem; padding:15px;" onclick="finish()">Payment Done - Download</button>
         </div>
-        <button style="border:none; background:none; color:gray; margin-top:20px; cursor:pointer;" onclick="closePayment()">Cancel</button>
+        <button style="border:none; background:none; color:gray; margin-top:20px; cursor:pointer;" onclick="closePayment()">Cancel Access</button>
     </div>
 </div>
 
 <script>
-    // --- 🔑 ORIGINAL FIREBASE CONFIG (आपके डेटा के अनुसार) ---
+    // --- 🔑 ORIGINAL FIREBASE CONFIG ---
     const config = {
         apiKey: "AIzaSyAc4n2sy6L8aOZMO6SMo0JifaiCKltUf9s",
         authDomain: "raman-project-259f4.firebaseapp.com",
@@ -162,7 +166,7 @@ def recursive_fib(n):
     // --- 🔑 EMAILJS INIT ---
     emailjs.init("GVPqUQLi_2-VcoVSP");
 
-    // Live Tracker
+    // Live Stats Connections
     db.ref('stats/views').transaction(c => (c || 0) + 1);
     db.ref('stats').on('value', snap => {
         const d = snap.val() || {likes:0, views:0};
@@ -203,10 +207,10 @@ def recursive_fib(n):
             a.href = f; a.download = f; a.click();
         });
         closePayment();
-        alert("Files Downloaded!");
+        alert("Success! Original Files Downloaded.");
     }
 
-    // --- 🚫 HARD KEYBOARD LOCK ---
+    // --- 🚫 SECURITY LOCK (No Print, No Save) ---
     window.addEventListener('keydown', function(e) {
         if ((e.ctrlKey && (e.key==='p' || e.key==='s' || e.key==='u')) || e.keyCode===123) {
             e.preventDefault();
