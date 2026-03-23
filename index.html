@@ -5,51 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>AlgoMetric Pro | Raman Kumar GEC Ajmer</title>
-    <meta name="description" content="AlgoMetric Pro by Raman Kumar, IT Student at GEC Ajmer. Performance analysis of algorithms.">
-    <meta name="keywords" content="Raman Kumar, Raman Kumar Baroliya, GEC Ajmer, AlgoMetric Pro, Raman Kumar IT, Raman Hatundi, Experiment YouTube, B.Tech IT Raman">
-    <meta name="author" content="Raman Kumar">
+    <meta name="description" content="AlgoMetric Pro by Raman Kumar, IT Student at GEC Ajmer.">
+    <meta name="keywords" content="Raman Kumar, Raman Kumar Baroliya, GEC Ajmer, AlgoMetric Pro, B.Tech IT Raman, Raman Hatundi">
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
     <style>
         :root { --primary: #2563eb; --dark: #0f172a; --gold: #f59e0b; --success: #22c55e; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f1f5f9; text-align: center; margin: 0; padding-bottom: 50px; }
-        .container { max-width: 900px; margin: 20px auto; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
-        header { background: var(--dark); color: white; padding: 40px; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f1f5f9; text-align: center; margin: 0; user-select: none; }
+        .container { max-width: 1000px; margin: 20px auto; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
+        header { background: var(--dark); color: white; padding: 30px; }
         
         /* Stats Bar */
-        .stats-bar { display: flex; justify-content: center; gap: 20px; padding: 15px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
-        .stat-btn { background: white; border: 1px solid #e2e8f0; padding: 8px 15px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: bold; }
+        .stats-bar { display: flex; justify-content: center; gap: 20px; padding: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+        .stat-btn { background: white; border: 1px solid #e2e8f0; padding: 6px 15px; border-radius: 20px; cursor: pointer; font-weight: bold; }
         
-        /* Table Style */
-        .preview-box { padding: 30px; text-align: left; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; border-radius: 8px; overflow: hidden; }
-        th, td { border: 1px solid #e2e8f0; padding: 12px; text-align: center; }
-        th { background-color: #f1f5f9; color: var(--dark); }
-        .blur-text { color: transparent; text-shadow: 0 0 8px rgba(0,0,0,0.5); user-select: none; }
+        /* PDF Viewer Area */
+        .viewer-section { padding: 20px; background: #e2e8f0; }
+        .pdf-frame { width: 100%; height: 500px; border: none; border-radius: 8px; background: white; }
+        
+        .action-area { padding: 30px; background: white; }
+        .btn { padding: 15px 30px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; color: white; margin: 10px; transition: 0.3s; }
+        .btn-gold { background: var(--gold); font-size: 1.1em; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); }
+        .btn-gold:hover { transform: scale(1.05); }
 
-        /* Buttons & Modal */
-        .btn { padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; color: white; margin: 10px; width: 85%; }
-        .btn-blue { background: var(--primary); }
-        .btn-gold { background: var(--gold); font-size: 1.1em; width: auto; box-shadow: 0 4px 15px rgba(245,158,11,0.3); }
-        #secure-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 9999; }
-        .card { background: white; padding: 30px; border-radius: 20px; width: 340px; }
+        /* Modal Settings */
+        #secure-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; z-index: 9999; }
+        .card { background: white; padding: 30px; border-radius: 20px; width: 340px; color: black; }
         input { width: 90%; padding: 12px; margin: 10px 0; border: 2px solid #e2e8f0; border-radius: 8px; text-align: center; }
         .step { display: none; }
         .step.active { display: block; }
-        .loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 10px auto; display: none; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; display: none; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body>
-
-<div class="container">
+<body oncontextmenu="return false;"> <div class="container">
     <header>
         <h1>AlgoMetric Pro 🚀</h1>
-        <p>Created by Raman Kumar | B.Tech IT, GEC Ajmer</p>
+        <p>Managed by Raman Kumar | GEC Ajmer IT Student</p>
     </header>
 
     <div class="stats-bar">
@@ -58,68 +53,44 @@
         <div class="stat-btn">👁️ <span id="viewCount">0</span> Views</div>
     </div>
 
-    <div class="preview-box">
-        <h3>Algorithm Benchmark Preview:</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Language</th>
-                    <th>Runtime (ms)</th>
-                    <th>Memory Usage</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>C++</td>
-                    <td>0.002ms</td>
-                    <td>1.2 MB</td>
-                </tr>
-                <tr>
-                    <td>Java</td>
-                    <td class="blur-text">HIDDEN</td>
-                    <td class="blur-text">HIDDEN</td>
-                </tr>
-                <tr>
-                    <td>Python</td>
-                    <td class="blur-text">HIDDEN</td>
-                    <td class="blur-text">HIDDEN</td>
-                </tr>
-            </tbody>
-        </table>
-        <p style="font-size: 0.9em; color: #666; margin-top: 10px;">* Poora data dekhne ke liye report download karein.</p>
-        <center>
-            <button class="btn btn-gold" onclick="openModal()">📥 Get Full Report PDF (₹10)</button>
-        </center>
+    <div class="viewer-section">
+        <h3>📄 Report Preview (Read-Only)</h3>
+        <iframe src="assignment.pdf#toolbar=0" class="pdf-frame"></iframe>
+        <p style="font-size: 12px; color: #666; margin-top: 5px;">नोट: डाउनलोड करने के लिए नीचे बटन का उपयोग करें।</p>
+    </div>
+
+    <div class="action-area">
+        <button class="btn btn-gold" onclick="openModal()">📥 Download Offline Copy (₹10)</button>
     </div>
 </div>
 
 <div id="secure-modal">
     <div class="card">
         <div id="step-1" class="step active">
-            <h3>📧 Step 1: Email OTP</h3>
-            <input type="email" id="email-box" placeholder="Apna Email dalein">
-            <button class="btn btn-blue" onclick="sendOTP()">Send OTP</button>
+            <h3>📧 Verification</h3>
+            <input type="email" id="email-box" placeholder="आपका ईमेल डालें">
+            <button class="btn" style="background:var(--primary); width:100%;" onclick="sendOTP()">Get OTP</button>
         </div>
         <div id="step-2" class="step">
-            <h3>Verify OTP</h3>
+            <h3>OTP दर्ज करें</h3>
             <input type="text" id="otp-box" placeholder="4-Digit OTP">
-            <button class="btn btn-blue" onclick="verifyOTP()">Verify OTP</button>
+            <button class="btn" style="background:var(--primary); width:100%;" onclick="verifyOTP()">Verify</button>
         </div>
         <div id="step-3" class="step">
-            <h3>💰 Step 2: Payment</h3>
-            <p>Scan & Pay ₹10</p>
+            <h3>💰 Payment</h3>
+            <p>₹10 का भुगतान रमन कुमार को करें</p>
             <a href="upi://pay?pa=lalr13031-2@okaxis&pn=Raman%20Kumar&am=10&cu=INR" class="btn" style="background:var(--success); text-decoration:none; display:block; line-height:40px;">Pay via UPI App</a>
             <hr style="margin: 20px 0; border: 0.5px solid #eee;">
-            <div id="loading-circle" class="loader"></div>
+            <div id="loading" class="loader"></div>
             <p id="status-text" style="font-size:12px; color:#666;"></p>
-            <button id="verify-btn" class="btn btn-blue" onclick="startAutoUnlock()">I have Paid - Verify</button>
+            <button id="verify-btn" class="btn" style="background:var(--primary); width:100%;" onclick="startAutoUnlock()">I Have Paid - Unlock Download</button>
         </div>
-        <button style="background:none; border:none; color:gray; cursor:pointer; margin-top:15px;" onclick="closeModal()">Cancel</button>
+        <button style="background:none; border:none; color:gray; cursor:pointer; margin-top:15px;" onclick="closeModal()">Close</button>
     </div>
 </div>
 
 <script>
-    // --- 1. FIREBASE SETUP ---
+    // --- FIREBASE CONFIG ---
     const firebaseConfig = {
         apiKey: "AIzaSyAc4n2sy6L8aOZMO6SMo0JifaiCKltUf9s",
         authDomain: "raman-project-259f4.firebaseapp.com",
@@ -132,16 +103,15 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // --- 2. EMAILJS INIT ---
     emailjs.init("GVPqUQLi_2-VcoVSP");
 
-    // --- 3. REAL-TIME STATS ---
+    // Stats Logic
     db.ref('stats/views').transaction(c => (c || 0) + 1);
     db.ref('stats').on('value', (snap) => {
         const data = snap.val() || { likes: 0, dislikes: 0, views: 0 };
-        document.getElementById('likeCount').innerText = data.likes || 0;
-        document.getElementById('dislikeCount').innerText = data.dislikes || 0;
-        document.getElementById('viewCount').innerText = data.views || 0;
+        document.getElementById('likeCount').innerText = data.likes;
+        document.getElementById('dislikeCount').innerText = data.dislikes;
+        document.getElementById('viewCount').innerText = data.views;
     });
 
     function handleReaction(type) {
@@ -149,21 +119,21 @@
         else db.ref('stats/dislikes').transaction(c => (c || 0) + 1);
     }
 
-    // --- 4. OTP & PAYMENT LOGIC ---
-    let generatedOTP;
+    // Modal Logic
+    let gOTP;
     function openModal() { document.getElementById('secure-modal').style.display = 'flex'; }
     function closeModal() { document.getElementById('secure-modal').style.display = 'none'; }
 
     function sendOTP() {
         const email = document.getElementById('email-box').value;
         if(!email.includes('@')) return alert("Sahi email dalein!");
-        generatedOTP = Math.floor(1000 + Math.random() * 9000);
-        emailjs.send("service_ay285wb", "template_37rcyad", { to_email: email, otp_code: generatedOTP, from_name: "Raman Kumar" })
+        gOTP = Math.floor(1000 + Math.random() * 9000);
+        emailjs.send("service_ay285wb", "template_37rcyad", { to_email: email, otp_code: gOTP, from_name: "Raman Kumar" })
             .then(() => { alert("OTP Bheja gaya!"); document.getElementById('step-1').classList.remove('active'); document.getElementById('step-2').classList.add('active'); });
     }
 
     function verifyOTP() {
-        if(document.getElementById('otp-box').value == generatedOTP) {
+        if(document.getElementById('otp-box').value == gOTP) {
             document.getElementById('step-2').classList.remove('active');
             document.getElementById('step-3').classList.add('active');
         } else alert("Galat OTP!");
@@ -171,16 +141,33 @@
 
     function startAutoUnlock() {
         const btn = document.getElementById('verify-btn');
-        const loader = document.getElementById('loading-circle');
+        const loader = document.getElementById('loading');
         const status = document.getElementById('status-text');
         btn.style.display = 'none'; loader.style.display = 'block';
-        const msgs = ["Verifying Payment...", "Checking Bank SMS...", "Success! ✅"];
+        const msgs = ["Verifying Transaction...", "Unlocking High-Res PDF...", "Success! ✅"];
         let i = 0;
         const inv = setInterval(() => {
             if(i < msgs.length) { status.innerText = msgs[i]; i++; }
-            else { clearInterval(inv); loader.style.display = 'none'; alert("PDF Download ho rahi hai!"); window.open('assignment.pdf', '_blank'); closeModal(); }
+            else { 
+                clearInterval(inv); 
+                loader.style.display = 'none'; 
+                // असली डाउनलोड यहाँ से शुरू होगा
+                const link = document.createElement('a');
+                link.href = 'assignment.pdf';
+                link.download = 'Raman_Kumar_Report.pdf';
+                link.click();
+                closeModal();
+            }
         }, 2000);
     }
+
+    // Keyboard Protection (Ctrl+S, Ctrl+P)
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && (e.key === 's' || e.key === 'p' || e.key === 'u')) {
+            e.preventDefault();
+            alert("Security Alert: Saving is disabled! Use the Download button.");
+        }
+    });
 </script>
 </body>
 </html>
