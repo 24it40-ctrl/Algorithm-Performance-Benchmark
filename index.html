@@ -12,142 +12,165 @@
     <style>
         :root { --primary: #2563eb; --dark: #0f172a; --accent: #f59e0b; --bg: #f8fafc; }
         
-        /* प्रिंट लॉक: प्रिंट कमांड पर पेज खाली दिखेगा */
-        @media print { body { display: none !important; } }
+        /* 🚫 PRINT LOCK: प्रिंट करने पर पूरा पेज खाली दिखेगा */
+        @media print { * { display: none !important; } }
 
-        body { font-family: 'Inter', sans-serif; background: var(--bg); margin: 0; user-select: none; color: var(--dark); }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; user-select: none; -webkit-user-select: none; overflow-x: hidden; }
         header { background: var(--dark); color: white; padding: 40px 20px; text-align: center; }
 
         .container { max-width: 1000px; margin: -30px auto 50px; background: white; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); overflow: hidden; }
 
-        /* कंट्रोल बटन्स (Tabs) */
+        /* Navigation Tabs */
         .tab-nav { display: flex; background: #f1f5f9; border-bottom: 2px solid #e2e8f0; }
-        .tab-btn { flex: 1; padding: 18px; border: none; background: none; cursor: pointer; font-weight: bold; color: #64748b; font-size: 1rem; transition: 0.3s; }
+        .tab-btn { flex: 1; padding: 20px; border: none; background: none; cursor: pointer; font-weight: bold; color: #64748b; font-size: 1rem; transition: 0.3s; }
         .tab-btn.active { background: white; color: var(--primary); border-bottom: 4px solid var(--primary); }
 
-        .panel { padding: 30px; display: none; min-height: 400px; }
-        .panel.active { display: block; animation: fadeIn 0.5s; }
+        .panel { padding: 40px; display: none; }
+        .panel.active { display: block; animation: fadeIn 0.4s; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         /* Tables Style */
-        .data-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .data-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         .data-table th, .data-table td { border: 1px solid #e2e8f0; padding: 15px; text-align: center; }
-        .data-table th { background: #f8fafc; }
+        .data-table th { background: #f8fafc; color: var(--dark); }
+        .recursive-row { background: #fff7ed; font-weight: bold; }
 
         /* PDF Viewer (Scrollable) */
-        .pdf-box { width: 100%; height: 700px; border-radius: 10px; border: 1px solid #ddd; background: #eee; }
+        .pdf-wrapper { width: 100%; height: 750px; border-radius: 10px; border: 1px solid #ddd; background: #eee; overflow: hidden; }
+        .pdf-viewer { width: 100%; height: 100%; border: none; }
 
-        /* Code Viewers (Scrollable) */
-        .code-container { background: #1e293b; color: #38bdf8; padding: 20px; border-radius: 12px; font-family: 'Courier New', monospace; height: 300px; overflow-y: auto; text-align: left; margin-bottom: 20px; border-left: 5px solid var(--accent); }
+        /* Code Viewer (Scrollable) */
+        .code-box { background: #1e293b; color: #38bdf8; padding: 25px; border-radius: 12px; font-family: 'Courier New', monospace; height: 400px; overflow-y: auto; text-align: left; margin-bottom: 30px; border-left: 5px solid var(--accent); white-space: pre-wrap; }
 
-        /* Footer Action */
-        .action-bar { background: #f1f5f9; padding: 30px; text-align: center; }
-        .btn-unlock { background: var(--accent); color: white; padding: 18px 45px; border: none; border-radius: 50px; font-size: 1.2rem; font-weight: bold; cursor: pointer; box-shadow: 0 8px 20px rgba(245,158,11,0.3); }
+        /* Payment Action */
+        .footer-action { background: #f1f5f9; padding: 40px; text-align: center; }
+        .btn-unlock { background: var(--accent); color: white; padding: 18px 50px; border: none; border-radius: 50px; font-size: 1.2rem; font-weight: bold; cursor: pointer; box-shadow: 0 8px 20px rgba(245,158,11,0.3); transition: 0.3s; }
+        .btn-unlock:hover { transform: scale(1.05); }
 
         /* Modal */
-        #secure-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); justify-content: center; align-items: center; z-index: 9999; }
-        .modal-card { background: white; padding: 35px; border-radius: 20px; width: 350px; text-align: center; }
+        #payment-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.97); justify-content: center; align-items: center; z-index: 9999; }
+        .modal-body { background: white; padding: 40px; border-radius: 20px; width: 360px; text-align: center; }
         input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
 <header>
-    <h1>AlgoMetric Pro: Interactive Dashboard 🚀</h1>
-    <p>Raman Kumar | B.Tech IT, GEC Ajmer</p>
+    <h1>AlgoMetric Pro: Project Dashboard 🚀</h1>
+    <p>IT Specialist: Raman Kumar | Government Engineering College Ajmer</p>
 </header>
 
 <div class="container">
     <div class="tab-nav">
-        <button class="tab-btn active" onclick="openTab(event, 'tab-table')">📊 Analysis Tables</button>
-        <button class="tab-btn" onclick="openTab(event, 'tab-pdf')">📜 PDF Report</button>
-        <button class="tab-btn" onclick="openTab(event, 'tab-code')">💻 Program Files</button>
+        <button class="tab-btn active" onclick="switchTab(event, 'p-table')">📊 Comparison Tables</button>
+        <button class="tab-btn" onclick="switchTab(event, 'p-pdf')">📜 PDF Analysis</button>
+        <button class="tab-btn" onclick="switchTab(event, 'p-code')">💻 Program Files</button>
     </div>
 
-    <div id="tab-table" class="panel active">
-        <h3>Performance Analysis Tables</h3>
+    <div id="p-table" class="panel active">
+        <h3>Algorithm Performance Data</h3>
+        <p style="color:gray;">तुलनात्मक अध्ययन: Recursive vs Non-Recursive Algorithms</p>
+        
         <table class="data-table">
             <thead>
                 <tr>
-                    <th>Language</th>
-                    <th>Runtime (Avg)</th>
-                    <th>Memory</th>
-                    <th>Status</th>
+                    <th>Algorithm Type</th>
+                    <th>C++ (Time)</th>
+                    <th>Java (Time)</th>
+                    <th>Python (Time)</th>
                 </tr>
             </thead>
             <tbody>
-                <tr><td>C++ (GCC)</td><td>0.0025 ms</td><td>1.1 MB</td><td>✅ Optimised</td></tr>
-                <tr><td>Java (JDK)</td><td>0.1250 ms</td><td>14.2 MB</td><td>⚠️ Medium</td></tr>
-                <tr><td>Python 3</td><td>2.1450 ms</td><td>8.5 MB</td><td>❌ Slow</td></tr>
+                <tr class="recursive-row">
+                    <td>Recursive Fibonacci</td>
+                    <td>0.0450 ms</td>
+                    <td>0.8900 ms</td>
+                    <td>12.450 ms</td>
+                </tr>
+                <tr>
+                    <td>Iterative (Non-Rec)</td>
+                    <td>0.0012 ms</td>
+                    <td>0.0120 ms</td>
+                    <td>0.0450 ms</td>
+                </tr>
+                <tr class="recursive-row">
+                    <td>Recursive Digit Sum</td>
+                    <td>0.0028 ms</td>
+                    <td>0.0450 ms</td>
+                    <td>0.1250 ms</td>
+                </tr>
+                <tr>
+                    <td>Single Digit Sum</td>
+                    <td>0.0008 ms</td>
+                    <td>0.0025 ms</td>
+                    <td>0.0089 ms</td>
+                </tr>
             </tbody>
         </table>
     </div>
 
-    <div id="tab-pdf" class="panel">
-        <h3>Full Research PDF (Read-Only)</h3>
-        <p style="color:red; font-size:12px;">[नोट: स्क्रॉल करके पूरा पढ़ें। डाउनलोड और प्रिंट लॉक हैं।]</p>
-        <iframe src="assignment.pdf#toolbar=0&navpanes=0" class="pdf-box"></iframe>
+    <div id="p-pdf" class="panel">
+        <h3>Full Research Report (Read-Only)</h3>
+        <p style="color:red; font-size:11px;">⚠️ सुरक्षा अलर्ट: केवल यहाँ पढ़ने की अनुमति है। प्रिंट और डाउनलोड लॉक हैं।</p>
+        <div class="pdf-wrapper">
+            <iframe src="assignment.pdf#toolbar=0&navpanes=0" class="pdf-viewer"></iframe>
+        </div>
     </div>
 
-    <div id="tab-code" class="panel">
-        <h3>Original Program Files</h3>
+    <div id="p-code" class="panel">
+        <h3>Case-Sensitive Program Files</h3>
         
         <p><b>Main.java</b></p>
-        <div class="code-container">
-            <code>
-                import java.util.Scanner;<br>
-                public class Main {<br>
-                &nbsp;&nbsp;public static void main(String[] args) {<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;System.out.println("Fibonacci Benchmarking...");<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;// Full Case-Sensitive code available after download.<br>
-                &nbsp;&nbsp;}<br>
-                }
-            </code>
+        <div class="code-box">
+public class Main {
+    public static void main(String[] args) {
+        // [Recursive & Iterative Implementation]
+        // Full Case-Sensitive Logic Unlocks after Payment
+        System.out.println("Analyzing Performance...");
+    }
+}
         </div>
 
         <p><b>script.py</b></p>
-        <div class="code-container" style="border-left-color: #38bdf8;">
-            <code>
-                import time<br>
-                def benchmark():<br>
-                &nbsp;&nbsp;start = time.time()<br>
-                &nbsp;&nbsp;# Full logic encrypted...<br>
-                &nbsp;&nbsp;print("Execution Time Analysis")
-            </code>
+        <div class="code-box" style="border-left-color: #38bdf8;">
+import time
+def recursive_fib(n):
+    # Hidden Algorithm Logic
+    pass
+# [अनलॉक करने पर सभी ओरिजिनल फाइलें मिलेंगी]
         </div>
     </div>
 
-    <div class="action-bar">
-        <h3>Need Offline Access?</h3>
-        <button class="btn-unlock" onclick="openPayment()">📥 Download All Original Files (₹10)</button>
-        <p style="font-size:11px; color:gray; margin-top:10px;">Includes: assignment.pdf, Main.java, script.py, logic.cpp</p>
+    <div class="footer-action">
+        <button class="btn-unlock" onclick="openPayment()">📥 Download Full Source Bundle (₹10)</button>
+        <p style="font-size:11px; color:gray; margin-top:10px;">फाइलें: assignment.pdf, Main.java, script.py, logic.cpp</p>
     </div>
 </div>
 
-<div id="secure-modal">
-    <div class="modal-card">
+<div id="payment-modal">
+    <div class="modal-body">
         <div id="s1">
             <h3>Verify Identity</h3>
-            <input type="email" id="emailBox" placeholder="Enter Your Email">
-            <button class="btn-unlock" style="width:100%; font-size:1rem;" onclick="sendOTP()">Send OTP</button>
+            <input type="email" id="u-email" placeholder="Your Email">
+            <button class="btn-unlock" style="width:100%" onclick="sendOTP()">Request OTP</button>
         </div>
         <div id="s2" style="display:none">
-            <h3>Verify OTP</h3>
-            <input type="text" id="otpBox" placeholder="4-Digit Code">
-            <button class="btn-unlock" style="width:100%; font-size:1rem;" onclick="verify()">Confirm</button>
+            <h3>Enter OTP</h3>
+            <input type="text" id="u-otp" placeholder="4-Digit Code">
+            <button class="btn-unlock" style="width:100%" onclick="verify()">Confirm Access</button>
         </div>
         <div id="s3" style="display:none">
-            <h3>Final Step</h3>
-            <p>Pay ₹10 to Unlock Everything</p>
+            <h3>Complete Payment</h3>
+            <p>Scan to Pay ₹10 to Raman Kumar</p>
             <a href="upi://pay?pa=lalr13031-2@okaxis&pn=Raman%20Kumar&am=10&cu=INR" class="btn-unlock" style="display:block; text-decoration:none; background:var(--primary); margin-bottom:10px;">Pay via UPI</a>
-            <button class="btn-unlock" style="width:100%; background:#10b981;" onclick="finishDL()">Payment Done - Download</button>
+            <button class="btn-unlock" style="width:100%; background:#10b981;" onclick="finishDL()">Payment Done - Download All</button>
         </div>
-        <button style="border:none; background:none; color:gray; margin-top:15px; cursor:pointer;" onclick="closePayment()">Cancel</button>
+        <button style="border:none; background:none; color:gray; margin-top:20px; cursor:pointer;" onclick="closePayment()">Cancel</button>
     </div>
 </div>
 
 <script>
-    // Firebase & EmailJS
+    // --- FIREBASE & EMAILJS ---
     const config = {
         apiKey: "AIzaSyAc4n2sy6L8aOZMO6SMo0JifaiCKltUf9s",
         authDomain: "raman-project-259f4.firebaseapp.com",
@@ -161,37 +184,33 @@
     const db = firebase.database();
     emailjs.init("GVPqUQLi_2-VcoVSP");
 
-    // Live Stats
+    // Live Views Tracker
     db.ref('stats/views').transaction(c => (c || 0) + 1);
 
-    // UI Tab Logic
-    function openTab(e, tabId) {
+    // Tab Switching Logic
+    function switchTab(e, id) {
         document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
+        document.getElementById(id).classList.add('active');
         e.currentTarget.classList.add('active');
     }
 
-    // Modal Workflow
+    // Modal Handling
     let myOTP;
-    function openPayment() { document.getElementById('secure-modal').style.display = 'flex'; }
-    function closePayment() { document.getElementById('secure-modal').style.display = 'none'; }
+    function openPayment() { document.getElementById('payment-modal').style.display = 'flex'; }
+    function closePayment() { document.getElementById('payment-modal').style.display = 'none'; }
 
     function sendOTP() {
-        const email = document.getElementById('emailBox').value;
+        const email = document.getElementById('u-email').value;
         myOTP = Math.floor(1000 + Math.random() * 9000);
         emailjs.send("service_ay285wb", "template_37rcyad", { to_email: email, otp_code: myOTP, from_name: "Raman Kumar" })
-            .then(() => { 
-                alert("OTP Sent!"); 
-                document.getElementById('s1').style.display='none'; 
-                document.getElementById('s2').style.display='block'; 
-            });
+            .then(() => { alert("OTP Sent!"); document.getElementById('s1').style.display='none'; document.getElementById('s2').style.display='block'; });
     }
 
     function verify() {
-        if(document.getElementById('otpBox').value == myOTP) {
+        if(document.getElementById('u-otp').value == myOTP) {
             document.getElementById('s2').style.display='none'; document.getElementById('s3').style.display='block';
-        } else alert("Invalid OTP!");
+        } else alert("Wrong OTP!");
     }
 
     function finishDL() {
@@ -201,17 +220,18 @@
             a.href = f; a.download = f; a.click();
         });
         closePayment();
-        alert("Files Downloaded Successfully!");
+        alert("Success! All Original Files Downloaded.");
     }
 
-    // Security Lock (No Print, No Save)
+    // --- 🚫 SECURITY LOCK (No Print, No Save) ---
     window.addEventListener('keydown', function(e) {
         if ((e.ctrlKey && (e.key==='p' || e.key==='s' || e.key==='u')) || e.keyCode===123) {
             e.preventDefault();
-            alert("Security Alert: Print and Save is blocked! Use the official Download button.");
+            e.stopPropagation();
+            alert("Security Protocol: Unauthorized Access Blocked.");
             return false;
         }
-    });
+    }, true);
 </script>
 </body>
 </html>
