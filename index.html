@@ -3,102 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AlgoMetric Pro | Raman Kumar GEC Ajmer</title>
+    <title>AlgoMetric Pro | Raman Kumar | GEC Ajmer</title>
     
-    <meta name="description" content="Algorithm Analysis by Raman Kumar, IT Student at GEC Ajmer.">
-    <meta name="keywords" content="Raman Kumar, Raman Kumar Baroliya, GEC Ajmer, AlgoMetric Pro, B.Tech IT Raman">
+    <meta name="description" content="Professional Algorithm Performance Analysis by Raman Kumar, IT Student at GEC Ajmer.">
+    <meta name="keywords" content="Raman Kumar, Raman Kumar Baroliya, GEC Ajmer, AlgoMetric, B.Tech IT, Algorithm Benchmark, Java Python C++ Code">
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
     <style>
-        :root { --primary: #2563eb; --dark: #0f172a; --gold: #f59e0b; --success: #22c55e; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f8fafc; text-align: center; margin: 0; user-select: none; }
-        .container { max-width: 1000px; margin: 20px auto; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
-        header { background: var(--dark); color: white; padding: 25px; }
+        :root { --primary: #2563eb; --dark: #0f172a; --accent: #f59e0b; --bg: #f1f5f9; --glass: rgba(255, 255, 255, 0.95); }
         
-        /* Live Stats Bar */
-        .stats-bar { display: flex; justify-content: center; gap: 20px; padding: 12px; background: #fff; border-bottom: 1px solid #e2e8f0; }
-        .stat-btn { background: #f1f5f9; border: 1px solid #cbd5e1; padding: 8px 18px; border-radius: 25px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        .stat-btn:hover { background: #e2e8f0; }
+        body { font-family: 'Inter', 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); margin: 0; user-select: none; }
+        @media print { body { display: none !important; } }
 
-        /* PDF Viewer Section */
-        .viewer-box { padding: 20px; background: #f1f5f9; position: relative; }
-        .pdf-display { width: 100%; height: 600px; border: 2px solid #cbd5e1; border-radius: 10px; background: white; }
-        .viewer-overlay { position: absolute; top: 20px; right: 40px; background: rgba(255,255,255,0.8); padding: 5px 10px; border-radius: 5px; font-size: 12px; font-weight: bold; color: var(--dark); }
+        /* Navigation & Header */
+        header { background: var(--dark); color: white; padding: 40px 20px; text-align: center; clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%); }
+        .chip { background: var(--primary); color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; margin-bottom: 10px; display: inline-block; }
 
-        /* Action Area */
-        .action-footer { padding: 30px; background: white; }
-        .btn-download { background: var(--gold); color: white; padding: 16px 35px; border: none; border-radius: 10px; font-size: 1.2em; font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(245, 158, 11, 0.4); transition: 0.3s; }
-        .btn-download:hover { transform: translateY(-3px); background: #d97706; }
+        /* Stats Bar */
+        .stats-container { display: flex; justify-content: center; gap: 15px; margin-top: -30px; }
+        .stat-card { background: white; padding: 10px 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 10px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .stat-card:hover { transform: translateY(-3px); }
+
+        /* Dashboard Area */
+        .dashboard { max-width: 1000px; margin: 40px auto; background: var(--glass); border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        .tabs { display: flex; background: #e2e8f0; }
+        .tab-btn { flex: 1; padding: 15px; border: none; cursor: pointer; font-weight: bold; color: #64748b; transition: 0.3s; }
+        .tab-btn.active { background: white; color: var(--primary); border-bottom: 3px solid var(--primary); }
+
+        .content-panel { padding: 30px; display: none; }
+        .content-panel.active { display: block; }
+
+        /* PDF Viewer Security */
+        .viewer-container { position: relative; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; }
+        .pdf-iframe { width: 100%; height: 600px; border: none; }
+        .viewer-blocker { position: absolute; top: 0; left: 0; width: 100%; height: 50px; background: transparent; z-index: 10; }
+
+        /* Code Cards */
+        .code-window { background: #1e293b; color: #e2e8f0; padding: 20px; border-radius: 12px; position: relative; margin-bottom: 20px; font-family: 'Fira Code', monospace; }
+        .code-header { color: #94a3b8; font-size: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; }
+        .blur-code { filter: blur(5px); opacity: 0.4; }
+
+        /* CTA Footer */
+        .cta-footer { background: white; padding: 40px; text-align: center; border-top: 1px solid #e2e8f0; }
+        .unlock-btn { background: linear-gradient(135deg, var(--accent), #d97706); color: white; padding: 20px 50px; border: none; border-radius: 50px; font-size: 1.2rem; font-weight: 800; cursor: pointer; box-shadow: 0 10px 25px rgba(245, 158, 11, 0.4); transition: 0.3s; }
+        .unlock-btn:hover { transform: scale(1.03); box-shadow: 0 15px 30px rgba(245, 158, 11, 0.5); }
 
         /* Modal */
-        #payment-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); justify-content: center; align-items: center; z-index: 10000; }
-        .modal-card { background: white; padding: 30px; border-radius: 20px; width: 350px; text-align: center; color: #333; }
-        input { width: 90%; padding: 12px; margin: 10px 0; border: 2px solid #e2e8f0; border-radius: 8px; text-align: center; font-size: 16px; }
-        .step { display: none; }
-        .step.active { display: block; }
-        .loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; width: 35px; height: 35px; animation: spin 1s linear infinite; margin: 15px auto; display: none; }
+        #payment-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.98); justify-content: center; align-items: center; z-index: 10000; }
+        .modal-card { background: white; padding: 40px; border-radius: 24px; width: 380px; text-align: center; position: relative; }
+        input { width: 100%; padding: 15px; margin: 15px 0; border: 2px solid #f1f5f9; border-radius: 12px; text-align: center; box-sizing: border-box; font-size: 1rem; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; display: none; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
-<div class="container">
-    <header>
-        <h1>AlgoMetric Pro 🚀</h1>
-        <p>B.Tech IT Student Project | Raman Kumar, GEC Ajmer</p>
-    </header>
+<header>
+    <div class="chip">OFFICIAL PROJECT PORTAL</div>
+    <h1>AlgoMetric Pro: Performance Analysis</h1>
+    <p>Scientific Evaluation of Fibonacci & Sum Algorithms | Raman Kumar, GEC Ajmer</p>
+</header>
 
-    <div class="stats-bar">
-        <button class="stat-btn" onclick="updateReaction('likes')">👍 <span id="likeCount">0</span></button>
-        <button class="stat-btn" onclick="updateReaction('dislikes')">👎 <span id="dislikeCount">0</span></button>
-        <div class="stat-btn">👁️ <span id="viewCount">0</span> Views</div>
+<div class="stats-container">
+    <div class="stat-card" onclick="upStat('likes')">👍 <span id="lCount">0</span> Likes</div>
+    <div class="stat-card" style="cursor:default;">👁️ <span id="vCount">0</span> Analysis Views</div>
+</div>
+
+<div class="dashboard">
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab(event, 'pdf-tab')">📊 Analysis Report</button>
+        <button class="tab-btn" onclick="switchTab(event, 'code-tab')">💻 Source Codes</button>
     </div>
 
-    <div class="viewer-box">
-        <div class="viewer-overlay">Read-Only Mode 📖</div>
-        <iframe src="assignment.pdf#toolbar=0&navpanes=0&scrollbar=0" class="pdf-display"></iframe>
+    <div id="pdf-tab" class="content-panel active">
+        <div class="viewer-container">
+            <div class="viewer-blocker"></div> <iframe src="assignment.pdf#toolbar=0&navpanes=0&scrollbar=0" class="pdf-iframe"></iframe>
+        </div>
+        <p style="color: #ef4444; font-size: 12px; margin-top: 10px; font-weight: bold;">🚫 Printing and Downloading restricted in Preview Mode.</p>
     </div>
 
-    <div class="action-footer">
-        <p style="color: #64748b; margin-bottom: 15px;">Poori report ko offline save karne ke liye niche click karein.</p>
-        <button class="btn-download" onclick="startProcess()">📥 Download Full Report (₹10)</button>
+    <div id="code-tab" class="content-panel">
+        <div class="code-window">
+            <div class="code-header"><span>Main.java (Preview)</span> <span>● ● ●</span></div>
+            <code>public class Fibonacci { <br> &nbsp;&nbsp;public static void main(String[] args) { <br> &nbsp;&nbsp;&nbsp;&nbsp;<span class="blur-code">System.out.println("Detailed Analysis Logic Locked");</span> <br> &nbsp;&nbsp;} <br> }</code>
+        </div>
+        <div class="code-window">
+            <div class="code-header"><span>script.py (Preview)</span> <span>● ● ●</span></div>
+            <code>def benchmark_logic(): <br> &nbsp;&nbsp;<span class="blur-code"># High performance logic is encrypted until unlock.</span> <br> &nbsp;&nbsp;pass</code>
+        </div>
+    </div>
+
+    <div class="cta-footer">
+        <h3>Unlock High-Resolution PDF & All Source Codes</h3>
+        <p style="color: #64748b; margin-bottom: 25px;">Get full access to Main.java, script.py, logic.cpp and the complete 4-language comparison report.</p>
+        <button class="unlock-btn" onclick="showModal()">📥 Unlock All Files (₹10)</button>
     </div>
 </div>
 
 <div id="payment-modal">
     <div class="modal-card">
-        <div id="step-1" class="step active">
-            <h3>📧 Verify Email</h3>
-            <p style="font-size:13px;">Download link ke liye OTP bhejein</p>
-            <input type="email" id="email-box" placeholder="Your Email">
-            <button class="btn-download" style="width:100%; padding:10px;" onclick="getOTP()">Send OTP</button>
+        <div id="s1" class="m-step">
+            <h3>📧 Secure Verification</h3>
+            <p style="font-size: 14px; color: #64748b;">Enter email to receive your private download key.</p>
+            <input type="email" id="u-email" placeholder="email@example.com">
+            <button class="unlock-btn" style="width:100%; font-size:1rem; padding:15px;" onclick="handleOTP()">Request Access Key</button>
         </div>
         
-        <div id="step-2" class="step">
-            <h3>Enter OTP</h3>
-            <input type="text" id="otp-box" placeholder="4-Digit Code">
-            <button class="btn-download" style="width:100%; padding:10px;" onclick="checkOTP()">Verify</button>
+        <div id="s2" class="m-step" style="display:none;">
+            <h3>Verify Key</h3>
+            <input type="text" id="u-otp" placeholder="Enter 4-Digit Key">
+            <button class="unlock-btn" style="width:100%; font-size:1rem; padding:15px;" onclick="checkOTP()">Verify Access</button>
         </div>
 
-        <div id="step-3" class="step">
-            <h3>💰 Final Step: Payment</h3>
-            <p>Pay ₹10 to Raman Kumar</p>
-            <a href="upi://pay?pa=lalr13031-2@okaxis&pn=Raman%20Kumar&am=10&cu=INR" class="btn-download" style="background:var(--success); text-decoration:none; display:block; padding:10px; margin-bottom:10px;">Pay via UPI</a>
+        <div id="s3" class="m-step" style="display:none;">
+            <h3>💰 Complete Payment</h3>
+            <p>Unlock premium files by paying ₹10 to Raman Kumar.</p>
+            <a href="upi://pay?pa=lalr13031-2@okaxis&pn=Raman%20Kumar&am=10&cu=INR" class="unlock-btn" style="background:var(--primary); text-decoration:none; display:block; padding:15px; margin-bottom:15px;">Pay via UPI</a>
             <hr>
-            <div id="spin" class="loader"></div>
-            <p id="msg" style="font-size:12px; color:gray;"></p>
-            <button id="v-btn" class="btn-download" style="width:100%; background:var(--primary); padding:10px;" onclick="finishPayment()">Payment Done - Download Now</button>
+            <div id="loader" class="loader"></div>
+            <p id="status-msg" style="font-size:12px; color:gray;"></p>
+            <button id="final-btn" class="unlock-btn" style="width:100%; font-size:1rem; padding:15px; background: #10b981;" onclick="processFinal()">Payment Done - Download</button>
         </div>
-        <button style="background:none; border:none; color:#94a3b8; margin-top:15px; cursor:pointer;" onclick="closeM()">Cancel</button>
+        <button style="background:none; border:none; color:#94a3b8; margin-top:20px; cursor:pointer;" onclick="hideModal()">Close Portal</button>
     </div>
 </div>
 
 <script>
-    // --- FIREBASE CONFIG ---
-    const config = {
+    // --- FIREBASE & EMAILJS ---
+    const firebaseConfig = {
         apiKey: "AIzaSyAc4n2sy6L8aOZMO6SMo0JifaiCKltUf9s",
         authDomain: "raman-project-259f4.firebaseapp.com",
         databaseURL: "https://raman-project-259f4-default-rtdb.firebaseio.com",
@@ -107,82 +142,84 @@
         messagingSenderId: "327813943239",
         appId: "1:327813943239:web:a12cb09f169807180113e2"
     };
-    firebase.initializeApp(config);
+    firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
-
-    // --- EMAILJS ---
     emailjs.init("GVPqUQLi_2-VcoVSP");
 
-    // --- LIVE STATS ---
+    // --- REALTIME STATS ---
     db.ref('stats/views').transaction(c => (c || 0) + 1);
     db.ref('stats').on('value', snap => {
-        const d = snap.val() || {likes:0, dislikes:0, views:0};
-        document.getElementById('likeCount').innerText = d.likes || 0;
-        document.getElementById('dislikeCount').innerText = d.dislikes || 0;
-        document.getElementById('viewCount').innerText = d.views || 0;
+        const d = snap.val() || {likes:0, views:0};
+        document.getElementById('lCount').innerText = d.likes || 0;
+        document.getElementById('vCount').innerText = d.views || 0;
     });
+    function upStat(t) { db.ref('stats/'+t).transaction(c => (c || 0) + 1); }
 
-    function updateReaction(type) {
-        db.ref('stats/' + type).transaction(c => (c || 0) + 1);
+    // --- UI LOGIC ---
+    function switchTab(e, tabId) {
+        document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        e.currentTarget.classList.add('active');
     }
 
-    // --- SECURE FLOW ---
-    let myOTP;
-    function startProcess() { document.getElementById('payment-modal').style.display = 'flex'; }
-    function closeM() { document.getElementById('payment-modal').style.display = 'none'; }
+    // --- SECURE WORKFLOW ---
+    let sessionOTP;
+    function showModal() { document.getElementById('payment-modal').style.display = 'flex'; }
+    function hideModal() { document.getElementById('payment-modal').style.display = 'none'; }
 
-    function getOTP() {
-        const email = document.getElementById('email-box').value;
-        if(!email.includes('@')) return alert("Valid Email dalein!");
-        myOTP = Math.floor(1000 + Math.random() * 9000);
-        emailjs.send("service_ay285wb", "template_37rcyad", { to_email: email, otp_code: myOTP, from_name: "Raman Kumar" })
+    function handleOTP() {
+        const email = document.getElementById('u-email').value;
+        if(!email.includes('@')) return alert("Valid Email required!");
+        sessionOTP = Math.floor(1000 + Math.random() * 9000);
+        emailjs.send("service_ay285wb", "template_37rcyad", { to_email: email, otp_code: sessionOTP, from_name: "Raman Kumar" })
             .then(() => { 
-                alert("OTP Sent!"); 
-                document.getElementById('step-1').classList.remove('active'); 
-                document.getElementById('step-2').classList.add('active'); 
+                alert("Access Key Sent!"); 
+                document.getElementById('s1').style.display = 'none'; 
+                document.getElementById('s2').style.display = 'block'; 
             });
     }
 
     function checkOTP() {
-        if(document.getElementById('otp-box').value == myOTP) {
-            document.getElementById('step-2').classList.remove('active');
-            document.getElementById('step-3').classList.add('active');
-        } else alert("Invalid OTP!");
+        if(document.getElementById('u-otp').value == sessionOTP) {
+            document.getElementById('s2').style.display = 'none'; 
+            document.getElementById('s3').style.display = 'block';
+        } else alert("Invalid Key!");
     }
 
-    function finishPayment() {
-        const btn = document.getElementById('v-btn');
-        const loader = document.getElementById('spin');
-        const status = document.getElementById('msg');
+    function processFinal() {
+        const btn = document.getElementById('final-btn');
+        const loader = document.getElementById('loader');
+        const status = document.getElementById('status-msg');
         btn.style.display = 'none'; loader.style.display = 'block';
         
-        const process = ["Verifying Transaction...", "Unlocking PDF File...", "Downloading Started! ✅"];
+        const steps = ["Validating Transaction...", "Decrypting Source Codes...", "Initiating Secure Download..."];
         let i = 0;
-        const itv = setInterval(() => {
-            if(i < process.length) { status.innerText = process[i]; i++; }
+        const timer = setInterval(() => {
+            if(i < steps.length) { status.innerText = steps[i]; i++; }
             else { 
-                clearInterval(itv);
+                clearInterval(timer);
                 loader.style.display = 'none';
-                // Trigger real download
-                const a = document.createElement('a');
-                a.href = 'assignment.pdf';
-                a.download = 'Raman_Kumar_Report.pdf';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                closeM();
-                alert("Report Downloaded Successfully!");
+                // Trigger Batch Download with Correct Case Names
+                const files = ['assignment.pdf', 'Main.java', 'script.py', 'logic.cpp'];
+                files.forEach(f => {
+                    const a = document.createElement('a');
+                    a.href = f; a.download = f; document.body.appendChild(a);
+                    a.click(); document.body.removeChild(a);
+                });
+                hideModal();
+                alert("All Professional Assets Unlocked Successfully!");
             }
         }, 2000);
     }
 
-    // Extra Security
-    document.addEventListener('keydown', e => {
-        if(e.ctrlKey && (e.key==='s' || e.key==='p' || e.key==='u')) {
-            e.preventDefault();
-            alert("Copyright Protected! Use official download button.");
+    // --- EXTRA SECURITY ---
+    document.onkeydown = function(e) {
+        if (e.keyCode == 123 || (e.ctrlKey && (e.shiftKey && e.keyCode == 73)) || (e.ctrlKey && e.keyCode == 85) || (e.ctrlKey && e.keyCode == 83) || (e.ctrlKey && e.keyCode == 80)) {
+            alert("Security Protocol: Unauthorized access to source or printing is blocked.");
+            return false;
         }
-    });
+    };
 </script>
 </body>
 </html>
