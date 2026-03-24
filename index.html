@@ -6,6 +6,8 @@
     <title>AlgoMetric Pro | Raman Kumar | GEC Ajmer IT</title>
     
     <meta name="description" content="Official Research Portal by Raman Kumar, IT Student at GEC Ajmer.">
+    <meta name="keywords" content="Raman Kumar, Raman Kumar Baroliya, GEC Ajmer, AlgoMetric Pro, IT Department GEC Ajmer">
+    
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -16,7 +18,7 @@
         /* 🚫 PRINT PROTECTION */
         @media print { body { display: none !important; } }
 
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; user-select: none; overflow-x: hidden; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; user-select: none; -webkit-user-select: none; overflow-x: hidden; }
         header { background: var(--dark); color: white; padding: 45px 20px; text-align: center; border-bottom: 5px solid var(--primary); }
 
         .container { max-width: 1000px; margin: -30px auto 50px; background: white; border-radius: 20px; box-shadow: 0 15px 45px rgba(0,0,0,0.15); overflow: hidden; }
@@ -36,7 +38,7 @@
         .data-table th { background: #f8fafc; color: var(--dark); }
         .highlight { background: #fff7ed; font-weight: bold; }
 
-        /* 📜 PDF Secure Viewer (Scrollable, No Print) */
+        /* 📜 PDF Secure Viewer */
         .pdf-wrapper { position: relative; width: 100%; height: 700px; background: #525659; border-radius: 12px; overflow: hidden; border: 3px solid #ddd; }
         .pdf-shield { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; background: rgba(255,255,255,0); pointer-events: none; }
         .pdf-iframe { width: 100%; height: 100%; border: none; }
@@ -52,7 +54,8 @@
 
         /* 📥 Unlock Section */
         .unlock-box { background: #f1f5f9; padding: 50px; text-align: center; border-top: 2px dashed #cbd5e1; }
-        .btn-unlock { background: linear-gradient(135deg, var(--accent), #d97706); color: white; padding: 20px 60px; border: none; border-radius: 50px; font-size: 1.3rem; font-weight: 800; cursor: pointer; box-shadow: 0 10px 25px rgba(245, 158, 11, 0.4); }
+        .btn-unlock { background: linear-gradient(135deg, var(--accent), #d97706); color: white; padding: 20px 60px; border: none; border-radius: 50px; font-size: 1.3rem; font-weight: 800; cursor: pointer; box-shadow: 0 10px 25px rgba(245, 158, 11, 0.4); text-decoration: none; display: inline-block; transition: 0.3s; }
+        .btn-unlock:hover { transform: scale(1.02); }
 
         /* Modal */
         #secure-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); justify-content: center; align-items: center; z-index: 10000; }
@@ -101,7 +104,6 @@
 
     <div id="p-interaction" class="panel">
         <h3>Community Interaction</h3>
-        
         <div style="display:flex; justify-content:center; gap:20px; margin-bottom: 40px;">
             <button id="like-btn" class="tab-btn" style="border:1px solid #ddd; border-radius:10px; max-width:200px;" onclick="handleReaction('likes')">
                 👍 <span id="lCount">0</span> Likes
@@ -146,9 +148,19 @@
         </div>
         <div id="st3" style="display:none">
             <h3>Payment & Download</h3>
-            <p>Pay ₹10 to Raman Kumar</p>
-            <a href="upi://pay?pa=lalr13031-2@okaxis&pn=Raman%20Kumar&am=10&cu=INR" class="btn-unlock" style="display:block; text-decoration:none; background:var(--primary); font-size:1rem; padding:15px;">UPI Pay</a>
-            <button class="btn-unlock" style="width:100%; background:#10b981; font-size:1rem; padding:15px; margin-top:10px;" onclick="finishDL()">Payment Done - Download</button>
+            <p id="pay-instruction">UPI के जरिए ₹10 का भुगतान करें</p>
+            <a href="upi://pay?pa=lalr13031-2@okaxis&pn=Raman%20Kumar&am=10&cu=INR" 
+               class="btn-unlock" 
+               style="display:block; text-decoration:none; background:var(--primary); font-size:1rem; padding:15px;" 
+               onclick="startPayment()">
+               Click to Pay (UPI)
+            </a>
+            <button id="finish-btn" 
+                    class="btn-unlock" 
+                    style="width:100%; background:#10b981; font-size:1rem; padding:15px; margin-top:10px; display:none;" 
+                    onclick="finishDL()">
+                    Payment Done - Download
+            </button>
         </div>
         <button style="border:none; background:none; color:gray; margin-top:20px; cursor:pointer;" onclick="closePayment()">Cancel Access</button>
     </div>
@@ -169,7 +181,7 @@
     const db = firebase.database();
     emailjs.init("GVPqUQLi_2-VcoVSP");
 
-    // Live Stats Tracking
+    // Live Tracking
     db.ref('stats/views').transaction(c => (c || 0) + 1);
     db.ref('stats').on('value', snap => {
         const d = snap.val() || {likes:0, views:0};
@@ -177,38 +189,34 @@
         document.getElementById('vCount').innerText = d.views;
     });
 
-    // --- 🚫 STRICT ONE-TIME LIKE LOGIC ---
+    // --- 🚫 ONE-TIME LIKE PROTECTION ---
     function handleReaction(type) {
-        if (localStorage.getItem('raman_voted_v3') === 'true') {
+        if (localStorage.getItem('raman_voted_final_fixed') === 'true') {
             document.getElementById('reaction-msg').innerText = "आप पहले ही लाइक कर चुके हैं! 😊";
             return;
         }
         db.ref('stats/' + type).transaction(c => (c || 0) + 1, (err, comm) => {
             if(comm) {
-                localStorage.setItem('raman_voted_v3', 'true');
+                localStorage.setItem('raman_voted_final_fixed', 'true');
                 document.getElementById('reaction-msg').innerText = "शुक्रिया! आपका लाइक सेव हो गया। ✅";
                 document.getElementById('like-btn').style.opacity = "0.5";
             }
         });
     }
 
-    // Load Check
     window.onload = function() {
-        if (localStorage.getItem('raman_voted_v3') === 'true') {
+        if (localStorage.getItem('raman_voted_final_fixed') === 'true') {
             document.getElementById('like-btn').style.opacity = "0.5";
-            document.getElementById('reaction-msg').innerText = "स्वागत है! आप लाइक कर चुके हैं।";
+            document.getElementById('reaction-msg').innerText = "स्वागत है! आप पहले ही लाइक कर चुके हैं।";
         }
     };
 
-    // --- 💬 REALTIME COMMENT SYSTEM ---
+    // --- 💬 COMMENT SYSTEM ---
     function postComment() {
         const n = document.getElementById('c-name').value;
         const t = document.getElementById('c-text').value;
-        if(!n || !t) { alert("Please fill both name and comment."); return; }
-        
-        db.ref('comments').push({
-            name: n, text: t, time: new Date().toLocaleString()
-        });
+        if(!n || !t) { alert("दोनों कॉलम भरें!"); return; }
+        db.ref('comments').push({ name: n, text: t, time: new Date().toLocaleString('hi-IN') });
         document.getElementById('c-name').value = '';
         document.getElementById('c-text').value = '';
     }
@@ -235,29 +243,41 @@
         e.currentTarget.classList.add('active');
     }
 
-    // --- 📥 PAYMENT FLOW ---
+    // --- 📥 SECURE PAYMENT FLOW ---
     let myOTP;
     function openPayment() { document.getElementById('secure-modal').style.display='flex'; }
     function closePayment() { document.getElementById('secure-modal').style.display='none'; }
+    
     function sendOTP() {
         const email = document.getElementById('u-mail').value;
         myOTP = Math.floor(1000 + Math.random() * 9000);
         emailjs.send("service_ay285wb", "template_37rcyad", { to_email: email, otp_code: myOTP, from_name: "Raman Kumar" })
-            .then(() => { alert("OTP Sent!"); document.getElementById('st1').style.display='none'; document.getElementById('st2').style.display='block'; });
+            .then(() => { alert("OTP Bheja gaya!"); document.getElementById('st1').style.display='none'; document.getElementById('st2').style.display='block'; });
     }
+
     function verify() {
         if(document.getElementById('u-otp').value == myOTP) {
-            document.getElementById('st2').style.display='none'; document.getElementById('st3').style.display='block';
-        } else alert("Wrong OTP!");
+            document.getElementById('st2').style.display='none'; 
+            document.getElementById('st3').style.display='block';
+        } else alert("Galat OTP!");
     }
+
+    function startPayment() {
+        // पेमेंट लिंक पर क्लिक करते ही 'Done' बटन को 5 सेकंड बाद दिखाएं
+        document.getElementById('pay-instruction').innerText = "भुगतान के बाद 'Download' बटन पर क्लिक करें।";
+        setTimeout(() => {
+            document.getElementById('finish-btn').style.display = 'block';
+        }, 5000); 
+    }
+
     function finishDL() {
         ['assignment.pdf', 'Main.java', 'script.py', 'logic.cpp'].forEach(f => {
             const a = document.createElement('a'); a.href = f; a.download = f; a.click();
         });
         closePayment();
+        alert("Files Downloaded Successfully!");
     }
 
-    // Block F12 and Ctrl+P
     window.addEventListener('keydown', e => {
         if ((e.ctrlKey && (e.key==='p' || e.key==='s' || e.key==='u')) || e.keyCode===123) {
             e.preventDefault(); return false;
